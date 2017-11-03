@@ -8,7 +8,7 @@ So base credits are for the apivore authors, this is 60% copy/paste of original 
 Rem: didn't forked cause didn't expect it to be a relatively small changes.
 
 ## What's new/different
-* Swagger schema can be loaded from file. One schema per MiniTestClass. 
+* Swagger schema can be loaded from file or directly. One schema per MiniTestClass. 
 * Removed all dependencies from active support and rails. See test as example of how 
   to use mini-apivore outside rails 
 * Didn't implement custom schema validator ( but keeped schema and code from apivore in case of future need )

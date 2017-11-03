@@ -34,8 +34,8 @@ module MiniApivore
   #---- class methods -----------
   module ClassMethods
 
-    def init_swagger( swagger_path )
-      SWAGGER_CHECKERS[self] ||= MiniApivore::SwaggerChecker.instance_for(swagger_path)
+    def init_swagger( swagger_path, schema= '' )
+      SWAGGER_CHECKERS[self] ||= MiniApivore::SwaggerChecker.instance_for(swagger_path, schema)
     end
 
     def runnable_methods

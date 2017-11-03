@@ -10,14 +10,15 @@ Gem::Specification.new do |spec|
   spec.email         = ["leshchuk@gmail.com"]
 
   spec.summary       = %q{ Minitest adaptation of an apivore gem }
-  spec.description   = %q{ Provides a tool for testing your application api against your swagger schema }
+  spec.description   = %q{ Minitest adaptation of apivore gem,
+                           Provides a tool for testing your application api against your swagger schema }
   spec.homepage      = 'https://github.com/alekseyl/mini-apivore'
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
   if spec.respond_to?(:metadata)
-    spec.metadata["allowed_push_host"] = "http://rubygems.org"
+    spec.metadata["allowed_push_host"] = "https://rubygems.org"
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."
@@ -25,7 +26,6 @@ Gem::Specification.new do |spec|
 
   spec.files       = ['lib/mini_apivore.rb', 'data/swagger_2.0_schema.json', 'data/draft04_schema.json']
   spec.files      += Dir['lib/mini_apivore/*.rb']
-  spec.files      += Dir['data/custom_schemata/*.json']
 
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }

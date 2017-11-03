@@ -4,8 +4,8 @@ module MiniApivore
   class SwaggerChecker
     PATH_TO_CHECKER_MAP = {}
 
-    def self.instance_for(path)
-      PATH_TO_CHECKER_MAP[path] ||= new(path)
+    def self.instance_for(path, schema = '' )
+      PATH_TO_CHECKER_MAP[path] ||= new(path, schema)
     end
 
     def has_path?(path)
@@ -64,8 +64,9 @@ module MiniApivore
 
     attr_reader :mappings
 
-    def initialize(swagger_path)
+    def initialize(swagger_path, schema )
       @swagger_path = swagger_path
+      @schema = schema
       load_swagger_doc!
       validate_swagger!
       setup_mappings!
@@ -77,6 +78,8 @@ module MiniApivore
     end
 
     def fetch_swagger!
+      return @schema unless @schema.empty?
+      
       if File.exist?( swagger_path )
         JSON.parse( File.read(swagger_path) )
       else
