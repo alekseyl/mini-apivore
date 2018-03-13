@@ -10,11 +10,11 @@ Rem: didn't forked cause didn't expect it to be a relatively small changes.
 Code-Test-Document, the idea of how things are need to be done: https://medium.com/@leshchuk/code-test-document-9b79921307a5
 
 ## What's new/different
-* Swagger schema can be loaded from file or directly. One schema per MiniTestClass. 
-* Removed all dependencies from active support and rails. See test as example of how 
-  to use mini-apivore outside rails 
-* Didn't implement custom schema validator ( but keeped schema and code from apivore in case of future need )
-* Test for untested routes added by default at the end of runnable_methods
+* Swagger schema can be loaded from a file or directly. There can be one schema per MiniTestClass. 
+* Removed all dependencies of active support and rails. See tests as an example on how 
+  to use a mini-apivore outside a rails 
+* Didn't implement a custom schema validator ( but I keeped an original schema and code from apivore in case of a future need )
+* Test for untested routes now added by default at the end of all runnable_methods
 * Much simplified tests against original project, rspec is replaced with minitest
 * Removed all rspec dependencies and usage.
 
@@ -58,7 +58,7 @@ class MiniApivoreTest < ActionDispatch::IntegrationTest
   include MiniApivore
 
   # swagger checker inited once per class, but since we using one definition
-  # for all we need redefine original swagger_checker
+  # for all we can just redefine original swagger_checker
   def swagger_checker;
     SWAGGER_CHECKERS[MiniApivoreTest]
   end
