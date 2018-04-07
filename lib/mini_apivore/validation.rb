@@ -82,7 +82,7 @@ module MiniApivore
         key = param.first
         dkey = data && ( data[key] || data[key.to_sym] )
         if dkey
-          path = path.gsub "{#{key}}", dkey.to_s
+          path = path.gsub "{#{key}}", dkey.to_param
         else
           raise URI::InvalidURIError, "No substitution data found for {#{key}}"\
               " to test the path #{path}.", caller

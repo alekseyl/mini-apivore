@@ -76,12 +76,12 @@ class CardsApiTest < MiniApivoreTest
   test 'cards unauthorized' do
     card = cards(:valid_card_1)
     check_route( :get, '/cards.json', NOT_AUTHORIZED )
-        
-    check_route( :get, '/cards/{id}.json', NOT_AUTHORIZED, id: card.id )
-    check_route( :patch, '/cards/{id}.json', NOT_AUTHORIZED, id: card.id,
+    # check_route using to_param inside
+    check_route( :get, '/cards/{id}.json', NOT_AUTHORIZED, id: card )
+    check_route( :patch, '/cards/{id}.json', NOT_AUTHORIZED, id: card,
                  _data: { card: { title: '1' } } )
     check_route( :post, '/cards.json', NOT_AUTHORIZED,  _data: { card: { title: '1' } } )
-    check_route( :delete, '/cards/{id}.json', NOT_AUTHORIZED, id: card.id )
+    check_route( :delete, '/cards/{id}.json', NOT_AUTHORIZED, id: card )
   end
 
   test 'cards forbidden' do
@@ -89,14 +89,14 @@ class CardsApiTest < MiniApivoreTest
     # card with restricted privileges 
     card = cards(:restricted_card)
 
-    check_route( :get, '/cards/{id}.json', FORBIDDEN, id: card.id )
-    check_route( :patch, '/cards/{id}.json', FORBIDDEN, id: card.id,
+    check_route( :get, '/cards/{id}.json', FORBIDDEN, id: card )
+    check_route( :patch, '/cards/{id}.json', FORBIDDEN, id: card,
                  _data: { card: { title: '1' } } )
 
     # this may be added if not all users can create cards 
     # check_route( :post, '/cards.json', FORBIDDEN,  _data: { card: { title: '1' } } )
 
-    check_route( :delete, '/cards/{id}.json', FORBIDDEN, id: card.id )
+    check_route( :delete, '/cards/{id}.json', FORBIDDEN, id: card )
   end
 
 
@@ -111,7 +111,7 @@ class CardsApiTest < MiniApivoreTest
   test 'cards REST authorized' do
     sign_in( users(:first_user) )
     check_route( :get, '/cards.json', OK )
-    check_route( :get, '/cards/{id}.json', OK, id: cards(:valid_card_1).id )
+    check_route( :get, '/cards/{id}.json', OK, id: cards(:valid_card_1) )
     
 
     assert_difference( -> { Card.count } ) do
@@ -126,12 +126,12 @@ class CardsApiTest < MiniApivoreTest
     assert( 'test card creation' == Card.last.title )
 
     check_route( :patch, '/cards/{id}.json', OK,
-                 _data: { card: { title: 'Nothing' } }, id: Card.last.id )
+                 _data: { card: { title: 'Nothing' } }, id: Card.last )
 
     assert(Card.last.title == 'Nothing' )
 
     assert_difference( -> { Card.count }, -1 ) do
-      check_route( :delete, '/cards/{id}.json', OK, id:  Card.last.id )
+      check_route( :delete, '/cards/{id}.json', OK, id:  Card.last )
     end
 
   end
