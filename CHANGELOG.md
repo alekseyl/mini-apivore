@@ -1,3 +1,6 @@
+# 0.1.3
+* add NO_CONTENT to http response codes
+
 # 0.1.2 
 
 * check_route now use inside to_param instead of to_s
