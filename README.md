@@ -57,7 +57,7 @@ class MiniApivoreTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include MiniApivore
 
-  # swagger checker inited once per class, but since we using one definition
+  # swagger checker initialized once per class, but since we using one definition
   # for all we can just redefine original swagger_checker
   def swagger_checker;
     SWAGGER_CHECKERS[MiniApivoreTest]
