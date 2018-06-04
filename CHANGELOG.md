@@ -1,3 +1,6 @@
+# 0.1.4
+* add fallbacks for to_param
+
 # 0.1.3
 * add NO_CONTENT to http response codes
 

@@ -5,6 +5,7 @@ require 'mini_apivore/swagger'
 require 'mini_apivore/swagger_checker'
 require 'mini_apivore/validation'
 require 'mini_apivore/http_codes'
+require 'mini_apivore/to_param'
 
 module MiniApivore
   SWAGGER_CHECKERS = {}
