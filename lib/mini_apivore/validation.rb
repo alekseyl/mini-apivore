@@ -20,7 +20,7 @@ module MiniApivore
 
     def check_route( verb, path, expected_response_code, params = {} )
       prepare_action_env( verb, path, expected_response_code, params )
-      assert( match?, failure_message )
+      assert( match?, "Failure message: #{failure_message},\n fullpath: #{full_path}, \n params causing failure:#{params}" )
     end
 
     def match?

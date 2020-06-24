@@ -1,3 +1,6 @@
+# 0.1.5 
+* add full path and params causing failure to assertion
+
 # 0.1.4
 * add fallbacks for to_param
 
