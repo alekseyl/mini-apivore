@@ -21,7 +21,7 @@ module MiniApivore
     def check_route( verb, path, expected_response_code, params = {} )
       prepare_action_env( verb, path, expected_response_code, params )
       assert( match?, <<FAIL )
-  Failed at: #{Thread.current.backtrace[1]}\n
+  Failed at: #{Thread.current.backtrace[2]}\n
   Failure message: #{failure_message},\n 
   fullpath: #{full_path}, \n 
   params causing failure:#{params}
