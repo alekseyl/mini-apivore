@@ -1,3 +1,6 @@
+# 0.1.6 
+* message will show the check_route execution, not the assert inside
+
 # 0.1.5 
 * add full path and params causing failure to assertion
 
