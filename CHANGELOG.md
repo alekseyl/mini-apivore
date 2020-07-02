@@ -1,3 +1,6 @@
+# 0.1.8
+* fix issue when to_param return not string
+
 # 0.1.7 
 * message will show the check_routes execution caller line, not the assert inside
 

@@ -87,7 +87,7 @@ FAIL
         key = param.first
         dkey = data && ( data[key] || data[key.to_sym] )
         if dkey
-          path = path.gsub "{#{key}}", dkey.to_param
+          path = path.gsub "{#{key}}", dkey.to_param.to_s
         else
           raise URI::InvalidURIError, "No substitution data found for {#{key}}"\
               " to test the path #{path}.", caller

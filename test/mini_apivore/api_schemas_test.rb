@@ -21,6 +21,24 @@ class UnimplementedPathTest < ActionDispatchMocker
   end
 end
 
+class ToParam
+  def to_param; 1 end
+end
+
+class ToParamIntTest < ActionDispatchMocker
+  include MiniApivore
+  include LastTestMocker
+
+  init_swagger( File.expand_path("../../data/03_mismatched_type_response.json", __FILE__) )
+
+  test 'to param as int' do
+    prepare_action_env(:get, "/services/{id}.json", 200, { "id" => ToParam.new } )
+    match?
+    assert( @errors[0] == " '/api/services/1.json#/name' of type string did not match one or more of the following types: integer, null " )
+  end
+
+end
+
 class MismatchedTypeTest < ActionDispatchMocker
   include MiniApivore
   include LastTestMocker
