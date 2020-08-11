@@ -13,7 +13,7 @@ Code-Test-Document, the idea of how things are need to be done: https://medium.c
 * Swagger schema can be loaded from a file or directly. There can be one schema per MiniTestClass. 
 * Removed all dependencies of active support and rails. See tests as an example on how 
   to use a mini-apivore outside a rails 
-* Didn't implement a custom schema validator ( but I keeped an original schema and code from apivore in case of a future need )
+* Didn't implement a custom schema validator ( but I kept the original schema and code from apivore in case of a future need )
 * Test for untested routes now added by default at the end of all runnable_methods
 * Much simplified tests against original project, rspec is replaced with minitest
 * Removed all rspec dependencies and usage.
