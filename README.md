@@ -1,11 +1,11 @@
 # MiniApivore
 
-MiniApivore is an adaptation of apivore gem for mini-test instead of rspec. 
+MiniApivore is an adaptation of the apivore gem for mini-test instead of rspec. 
 
 Original project: https://github.com/westfieldlabs/apivore
 
-So base credits are for the apivore authors, this is 60% copy/paste of original project. 
-Rem: didn't forked cause didn't expect it to be a relatively small changes.
+So base credits should go to the apivore authors, this is 60% copy/paste of original project. 
+Rem: didn't forked it cause didn't expect it to be a relatively small set of changes.
 
 Code-Test-Document, the idea of how things are need to be done: https://medium.com/@leshchuk/code-test-document-9b79921307a5
 
