@@ -66,72 +66,107 @@ class MiniApivoreTest < ActionDispatch::IntegrationTest
 end
 ```
 
+The most readable way to handle check_routes, especially when you have nested resources i.e. like always :), 
+is to create a set of named route helpers for the TestClass, may be even extract it to a module if it's a generalized helpers.
+
+Then you need to redefine ```prepare_error_backtrace```, cause assert for correct execution is hidden deep in stack
+ and instead of pointing to just to that useless stack frame you need show something upper and may be more context,
+ so you can redefine ```prepare_error_backtrace``` and deliver valuable context!  
+
+Here is an example how you can handle simple resource route testing, as you can see you can read it 
+without a context of a routes structure and without verbosity:
+ 
 ```ruby
 #cards_api_test.rb
 require 'test_helper'
 require 'mini_apivore_helper'
 
 class CardsApiTest < MiniApivoreTest
+  
+   #------- DEFINE CLASS SPECIFIC NAMED ROUTE HELPERS ----------------
+    def __get_cards(expectation)
+       check_route( :get, '/cards.json', expectation )
+    end 
+
+    def __get_card( card, expectation)
+      # check_route will use to_param inside
+      check_route( :get, '/cards/{id}.json', expectation, id: card )
+    end 
+
+    def __update_card( card, expectation, params = {})
+      # check_route will use to_param inside
+      check_route( :patch, '/cards/{id}.json', expectation, id: card, **params)
+    end 
+
+    def __create_card( expectation, params = {})
+      check_route( :post, '/cards.json', expectation, params )
+    end
+
+    def __delete_card(card, expectation)
+      check_route( :delete, '/cards/{id}.json', expectation, id: card )
+    end
+   #------- DEFINE CLASS SPECIFIC NAMED ROUTE HELPERS DONE -----------
+   # 
+   # failure need a proper stackframe and a context around:
+   def prepare_error_backtrace
+     # it will deliver something like this: 
+     #"/app/test/helpers/base_routes_helpers.rb:57:in `__create_card'",
+     #"/app/test/integration/cards_api_test.rb:71:in `block (2 levels) in <class:CommentsApiTest>'",
+     Thread.current.backtrace[2..-1].slice_after{|trc| trc[/check_route/] }.to_a.last[0..1]
+   end
 
   test 'cards unauthorized' do
     card = cards(:valid_card_1)
-    check_route( :get, '/cards.json', NOT_AUTHORIZED )
-    # check_route using to_param inside
-    check_route( :get, '/cards/{id}.json', NOT_AUTHORIZED, id: card )
-    check_route( :patch, '/cards/{id}.json', NOT_AUTHORIZED, id: card,
-                 _data: { card: { title: '1' } } )
-    check_route( :post, '/cards.json', NOT_AUTHORIZED,  _data: { card: { title: '1' } } )
-    check_route( :delete, '/cards/{id}.json', NOT_AUTHORIZED, id: card )
+    __get_cards( NOT_AUTHORIZED )
+    __get_card( card, NOT_AUTHORIZED )
+    __update_card( card, NOT_AUTHORIZED, _data: { card: { title: '1' } } )
+    __create_card( NOT_AUTHORIZED, _data: { card: { title: '1' } } )
+    __delete_card( card, NOT_AUTHORIZED )
   end
 
   test 'cards forbidden' do
-    sign_in( users(:first_user) )
+    sign_in( :first_user )
     # card with restricted privileges 
     card = cards(:restricted_card)
 
-    check_route( :get, '/cards/{id}.json', FORBIDDEN, id: card )
-    check_route( :patch, '/cards/{id}.json', FORBIDDEN, id: card,
-                 _data: { card: { title: '1' } } )
+    __get_card( card, FORBIDDEN )
+    __update_card( card, FORBIDDEN, id: card, _data: { card: { title: '1' } } )
 
     # this may be added if not all users can create cards 
     # check_route( :post, '/cards.json', FORBIDDEN,  _data: { card: { title: '1' } } )
 
-    check_route( :delete, '/cards/{id}.json', FORBIDDEN, id: card )
+    __delete_card( card, FORBIDDEN)
   end
-
 
   test 'cards not_found' do
-    sign_in( users(:first_user) )
-    check_route( :get, '/cards/{id}.json', NOT_FOUND, id: -1 )
-    check_route( :patch, '/cards/{id}.json', NOT_FOUND, id: -1 )
-    check_route( :delete, '/cards/{id}.json', NOT_FOUND, id: -1 )
+    sign_in( :first_user )
+    card = Card.new(id: -1)
+    __get_card( card, NOT_FOUND )
+    __update_card( card, NOT_FOUND )
+    __delete_card( card, NOT_FOUND  )
   end
 
-
   test 'cards REST authorized' do
-    sign_in( users(:first_user) )
-    check_route( :get, '/cards.json', OK )
-    check_route( :get, '/cards/{id}.json', OK, id: cards(:valid_card_1) )
-    
+    sign_in( :first_user )
+    __get_cards( OK )
+    __get_cards( cards(:valid_card_1), OK )
 
     assert_difference( -> { Card.count } ) do
-      check_route( :post, '/cards.json', OK,
-                   _data: {
+      __create_card( OK, _data: {
                      card: { title: 'test card creation', 
                      card_preview_img_attributes: {
                                 upload: fixture_file_upload( Rails.root.join('test', 'fixtures', 'files', 'test.png') ,'image/png')
                               }
                      } } )
     end
-    assert( 'test card creation' == Card.last.title )
+    created_card = Card.last
+    assert_equal( 'test card creation', created_card.title )
 
-    check_route( :patch, '/cards/{id}.json', OK,
-                 _data: { card: { title: 'Nothing' } }, id: Card.last )
-
-    assert(Card.last.title == 'Nothing' )
+    __update_card( created_card, OK, _data: { card: { title: 'Nothing' } } )
+    assert_equal( created_card.reload.title, 'Nothing' )
 
     assert_difference( -> { Card.count }, -1 ) do
-      check_route( :delete, '/cards/{id}.json', OK, id:  Card.last )
+       __delete_card( created_card, NO_CONTENT )
     end
 
   end

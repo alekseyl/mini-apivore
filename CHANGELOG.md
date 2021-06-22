@@ -1,3 +1,7 @@
+# 0.2.0
+* prepare_backtrace extracted as a standalone method, you can play with it to deliver clear failure point, whenever you are wrapping check_route in named helper or just want more context
+* Readme update
+
 # 0.1.8
 * fix issue when to_param return not string
 
