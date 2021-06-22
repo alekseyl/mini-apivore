@@ -1,11 +1,11 @@
 # MiniApivore
 
-MiniApivore is an adaptation of apivore gem for mini-test instead of rspec. 
+MiniApivore is an adaptation of the apivore gem for mini-test instead of rspec. 
 
 Original project: https://github.com/westfieldlabs/apivore
 
-So base credits are for the apivore authors, this is 60% copy/paste of original project. 
-Rem: didn't forked cause didn't expect it to be a relatively small changes.
+So base credits should go to the apivore authors, this is 60% copy/paste of original project. 
+Rem: didn't forked it cause didn't expect it to be a relatively small set of changes.
 
 Code-Test-Document, the idea of how things are need to be done: https://medium.com/@leshchuk/code-test-document-9b79921307a5
 
@@ -13,9 +13,9 @@ Code-Test-Document, the idea of how things are need to be done: https://medium.c
 * Swagger schema can be loaded from a file or directly. There can be one schema per MiniTestClass. 
 * Removed all dependencies of active support and rails. See tests as an example on how 
   to use a mini-apivore outside a rails 
-* Didn't implement a custom schema validator ( but I keeped an original schema and code from apivore in case of a future need )
-* Test for untested routes now added by default at the end of all runnable_methods
-* Much simplified tests against original project, rspec is replaced with minitest
+* Didn't implement a custom schema validator ( but I kept the original schema and code from apivore in case of a future need )
+* The test for untested routes now added by default at the end of all runnable_methods
+* Much more simplified tests against original project, rspec is replaced with minitest
 * Removed all rspec dependencies and usage.
 
 ## Installation
