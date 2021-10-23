@@ -28,7 +28,12 @@ module MiniApivore
 FAIL
     end
 
-
+    def prepare_error_backtrace
+      # it will deliver something like this:
+      #"/app/test/helpers/base_routes_helpers.rb:57:in `__create_card'",
+      #"/app/test/integration/cards_api_test.rb:71:in `block (2 levels) in <class:CommentsApiTest>'",
+      Thread.current.backtrace[2..-1].slice_after{|trc| trc[/check_route/] }.to_a.last[0..1]
+    end
 
     def match?
       #pre_checks
