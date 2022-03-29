@@ -36,7 +36,9 @@ module MiniApivore
           end
           method_data.responses.each do |response_code, response_data|
             schema_location = nil
-            if response_data.schema
+            if response_data['$ref']
+              schema_location = response_data['$ref']
+            elsif response_data.schema
               schema_location = Fragment.new ['#', 'paths', path, verb, 'responses', response_code, 'schema']
             end
             block.call(path, verb, response_code, schema_location)
