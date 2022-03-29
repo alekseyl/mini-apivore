@@ -41,13 +41,11 @@ FAIL
 
       # request
       unless has_errors?
-        send(
+        action_dispatch_request(
           @verb,
-          *action_dispatch_request_args(
-            full_path,
-            params: @params['_data'] || {},
-            headers: @params['_headers'] || {}
-          )
+          full_path,
+          params: @params['_data'] || {},
+          headers: @params['_headers'] || {}
         )
 
         #post_checks
@@ -133,13 +131,12 @@ FAIL
       JSON.parse(response.body) if response.body && !response.body.empty?
     end
 
-    def action_dispatch_request_args(path, params: {}, headers: {})
+    def action_dispatch_request(verb, path, params: {}, headers: {})
       if defined?(ActionPack) && ActionPack::VERSION::MAJOR >= 5
-        [path, params: params, headers: headers]
+        send(verb, path, params: params, headers: headers)
       else
-        [path, params, headers]
+        send(verb, path, params, headers)
       end
     end
   end
-
 end
