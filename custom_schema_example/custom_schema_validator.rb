@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # COpied from apivore just to keep as an example
 module Apivore
   class CustomSchemaValidator

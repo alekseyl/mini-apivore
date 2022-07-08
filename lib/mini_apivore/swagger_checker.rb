@@ -1,23 +1,26 @@
+# frozen_string_literal: true
+
+require "English"
 require "mini_apivore/version"
 
 module MiniApivore
   class SwaggerChecker
     PATH_TO_CHECKER_MAP = {}
 
-    def self.instance_for(path, schema = '' )
+    def self.instance_for(path, schema = "")
       PATH_TO_CHECKER_MAP[path] ||= new(path, schema)
     end
 
     def has_path?(path)
-      mappings.has_key?(path)
+      mappings.key?(path)
     end
 
     def has_method_at_path?(path, verb)
-      mappings[path].has_key?(verb)
+      mappings[path].key?(verb)
     end
 
     def has_response_code_for_path?(path, verb, code)
-      mappings[path][verb].has_key?(code.to_s)
+      mappings[path][verb].key?(code.to_s)
     end
 
     def response_codes_for_path(path, verb)
@@ -32,18 +35,17 @@ module MiniApivore
 
     def fragment(path, verb, code)
       path_fragment = mappings[path][verb.to_s][code.to_s]
-      path_fragment.dup unless path_fragment.nil?
+      path_fragment&.dup
     end
 
     def remove_tested_end_point_response(path, verb, code)
       return if untested_mappings[path].nil? ||
         untested_mappings[path][verb].nil?
+
       untested_mappings[path][verb].delete(code.to_s)
-      if untested_mappings[path][verb].size == 0
+      if untested_mappings[path][verb].size.zero?
         untested_mappings[path].delete(verb)
-        if untested_mappings[path].size == 0
-          untested_mappings.delete(path)
-        end
+        untested_mappings.delete(path) if untested_mappings[path].size.zero?
       end
     end
 
@@ -51,20 +53,14 @@ module MiniApivore
       @swagger.base_path
     end
 
-    def response=(response)
-      @response = response
-    end
-
-    attr_reader :response, :swagger, :swagger_path
-
-    def untested_mappings; @untested_mappings end
-    def untested_mappings=( other ); @untested_mappings = other end
+    attr_accessor :response, :untested_mappings
+    attr_reader :swagger, :swagger_path
 
     private
 
     attr_reader :mappings
 
-    def initialize(swagger_path, schema )
+    def initialize(swagger_path, schema)
       @swagger_path = swagger_path
       @schema = schema
       load_swagger_doc!
@@ -79,15 +75,15 @@ module MiniApivore
 
     def fetch_swagger!
       return @schema unless @schema.empty?
-      
-      if File.exist?( swagger_path )
-        JSON.parse( File.read(swagger_path) )
+
+      if File.exist?(swagger_path)
+        JSON.parse(File.read(swagger_path))
       else
         session = ActionDispatch::Integration::Session.new(Rails.application)
         begin
           session.get(swagger_path)
-        rescue
-          fail "Unable to perform GET request for swagger json: #{swagger_path} - #{$!}."
+        rescue StandardError
+          raise "Unable to perform GET request for swagger json: #{swagger_path} - #{$ERROR_INFO}."
         end
         JSON.parse(session.response.body)
       end
@@ -98,7 +94,7 @@ module MiniApivore
       unless errors.empty?
         msg = "The document fails to validate as Swagger #{swagger.version}:\n"
         msg += errors.join("\n")
-        fail msg
+        raise msg
       end
     end
 
@@ -108,6 +104,7 @@ module MiniApivore
         @mappings[path] ||= {}
         @mappings[path][verb] ||= {}
         raise "duplicate" unless @mappings[path][verb][response_code].nil?
+
         @mappings[path][verb][response_code] = fragment
       end
 

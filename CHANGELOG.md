@@ -1,3 +1,10 @@
+## 0.3.0
+* rubocop-shopify added and applied
+* released https://github.com/alekseyl/mini-apivore/pull/1
+* released https://github.com/alekseyl/mini-apivore/pull/2
+* released https://github.com/alekseyl/mini-apivore/pull/3
+* fixed other issues related to ** and kwargs blocking ruby 3 usage
+
 ## 0.2.1
 * added default prepare_error_backtrace method
 
