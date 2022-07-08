@@ -1,3 +1,7 @@
+## 0.3.1
+* remove small inconvenience in schema defaults ( it should be a hash, not a string, since we are not parsing it but using directly )
+* add indifferent access to swagger loader
+
 ## 0.3.0
 * rubocop-shopify added and applied
 * released https://github.com/alekseyl/mini-apivore/pull/1

@@ -6,6 +6,7 @@ require "hashie"
 module MiniApivore
   class Swagger < Hash
     include Hashie::Extensions::MergeInitializer
+    include Hashie::Extensions::IndifferentAccess
 
     NONVERB_PATH_ITEMS = "parameters"
 
