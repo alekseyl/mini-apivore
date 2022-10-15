@@ -4,15 +4,15 @@ MiniApivore is an adaptation of the apivore gem for mini-test instead of rspec.
 
 Original project: https://github.com/westfieldlabs/apivore
 
-So base credits should go to the apivore authors, this is 60% copy/paste of original project. 
+So base credits should go to the apivore authors, this is 50% copy/paste of original project. 
 Rem: didn't forked it cause didn't expect it to be a relatively small set of changes.
 
 Code-Test-Document, the idea of how things are need to be done: https://medium.com/@leshchuk/code-test-document-9b79921307a5
 
 ## What's new/different
-* Swagger schema can be loaded from a file or directly. There can be one schema per MiniTestClass. 
+* Swagger schema can be loaded from a file or directly from the specified route. There can be one schema per MiniTestClass. 
 * Removed all dependencies of active support and rails. See tests as an example on how 
-  to use a mini-apivore outside a rails 
+  to use a mini-apivore outside a rails* (*you need to load schema from file then)
 * Didn't implement a custom schema validator ( but I kept the original schema and code from apivore in case of a future need )
 * The test for untested routes now added by default at the end of all runnable_methods
 * Much more simplified tests against original project, rspec is replaced with minitest
@@ -40,7 +40,7 @@ To start testing routes with mini_apivore you need:
 
 * ```require 'mini_apivore' ``` in you MiniTest class file
 * ```include MiniApivore``` in you MiniTest class 
-* ```init_swagger('/apidocs.json')``` init swagger-schema against which yourtest are gonna run
+* ```init_swagger('apidocs.json')``` init swagger-schema to test against, '/apidocs.json' -- this should be a file_path OR a rails route
 * Run ```check_route( :get, '/cards.json', OK )``` against all routes in your swagger schema
 
 You can see example in test/mini_apivore/mini_apivore/api_schemas_test.rb
@@ -52,10 +52,12 @@ with devise integration as authentication framework
 #mini_apivore_helper.rb
 require 'mini_apivore'
 
-# this is simple intermediate class for apivore tes classes
+# this is simple intermediate class for apivore test classes
 class MiniApivoreTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include MiniApivore
+  # initialize schema from local file
+  init_swagger('apidocs.json')
 
   # swagger checker initialized once per class, but since we using one definition
   # for all we can just redefine original swagger_checker
