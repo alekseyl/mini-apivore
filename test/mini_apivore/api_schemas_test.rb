@@ -75,6 +75,23 @@ class UnexpectedHttpTest < ActionDispatchMocker
   end
 end
 
+class InveritanceTest < UnexpectedHttpTest
+  include LastTestMocker
+  def assert_nothing_raised
+    yield
+  rescue => error
+    raise Minitest::UnexpectedError.new(error)
+  end
+
+  test "nothing raised on match? call" do
+    prepare_action_env(:get, "/services.json", 222)
+    assert_nothing_raised { match? }
+
+    assert(@errors[0] == "Path /services.json did not respond with expected status code. Expected 222 got 200")
+  end
+end
+
+
 class ExtraPropertiesTest < ActionDispatchMocker
   include MiniApivore
   include LastTestMocker
