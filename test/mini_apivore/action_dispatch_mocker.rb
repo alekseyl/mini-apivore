@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class ActionDispatchMocker < Minitest::Test
   extend ActiveSupport::Testing::Declarative
 
