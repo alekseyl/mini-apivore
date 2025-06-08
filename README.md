@@ -183,6 +183,9 @@ class CardsApiTest < MiniApivoreTest
   end
 end
 ```
+## TODO
+- [ ] Separate test classes into files
+- [ ] Fix rubocop issues with not-frozen const
 
 ## Development
 
