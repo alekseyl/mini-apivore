@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
 
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ["lib", "data"]
+  spec.require_paths = %w[lib data]
 
   spec.add_runtime_dependency("hashie", ">= 3.3")
   spec.add_runtime_dependency("json-schema", ">= 2.5")

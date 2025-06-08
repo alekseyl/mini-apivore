@@ -113,10 +113,10 @@ FAIL
     end
 
     def check_status_code
-      if response.status != @expected_response_code
-        @errors << "Path #{@path} did not respond with expected status code."\
-          " Expected #{@expected_response_code} got #{response.status}"\
-      end
+      return unless response.status != @expected_response_code
+
+      @errors << "Path #{@path} did not respond with expected status code."\
+        " Expected #{@expected_response_code} got #{response.status}"\
     end
 
     def check_response_is_valid

@@ -5,7 +5,7 @@ require "mini_apivore/version"
 
 module MiniApivore
   class SwaggerChecker
-    PATH_TO_CHECKER_MAP = {}
+    PATH_TO_CHECKER_MAP = {}.freeze
 
     def self.instance_for(path, schema = {})
       PATH_TO_CHECKER_MAP[path] ||= new(path, schema)
@@ -40,13 +40,13 @@ module MiniApivore
 
     def remove_tested_end_point_response(path, verb, code)
       return if untested_mappings[path].nil? ||
-        untested_mappings[path][verb].nil?
+                untested_mappings[path][verb].nil?
 
       untested_mappings[path][verb].delete(code.to_s)
-      if untested_mappings[path][verb].size.zero?
-        untested_mappings[path].delete(verb)
-        untested_mappings.delete(path) if untested_mappings[path].size.zero?
-      end
+      return unless untested_mappings[path][verb].empty?
+
+      untested_mappings[path].delete(verb)
+      untested_mappings.delete(path) if untested_mappings[path].empty?
     end
 
     def base_path
@@ -91,11 +91,11 @@ module MiniApivore
 
     def validate_swagger!
       errors = swagger.validate
-      unless errors.empty?
-        msg = "The document fails to validate as Swagger #{swagger.version}:\n"
-        msg += errors.join("\n")
-        raise msg
-      end
+      return if errors.empty?
+
+      msg = "The document fails to validate as Swagger #{swagger.version}:\n"
+      msg += errors.join("\n")
+      raise msg
     end
 
     def setup_mappings!

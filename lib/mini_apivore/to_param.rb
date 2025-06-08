@@ -93,6 +93,6 @@ unless Hash.method_defined?(:to_param)
       end.compact.sort! * "&"
     end
 
-    alias_method :to_param, :to_query
+    alias to_param to_query
   end
 end

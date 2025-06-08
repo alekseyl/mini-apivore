@@ -10,7 +10,7 @@ require "mini_apivore/http_codes"
 require "mini_apivore/to_param"
 
 module MiniApivore
-  SWAGGER_CHECKERS = {}
+  SWAGGER_CHECKERS = {}.freeze
   #----- Module globals -----------------
   def self.runnable_list
     @@runnable_list ||= [] # rubocop:disable Style/ClassVars
@@ -25,7 +25,7 @@ module MiniApivore
     SWAGGER_CHECKERS.each do |cls, chkr|
       chkr.untested_mappings.each do |path, methods|
         methods.each do |method, codes|
-          codes.each do |code, _|
+          codes.each_key do |code|
             errors << "#{method} #{path} is untested for response code #{code} in test class #{cls}"
           end
         end
