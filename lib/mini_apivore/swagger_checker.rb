@@ -5,7 +5,7 @@ require "mini_apivore/version"
 
 module MiniApivore
   class SwaggerChecker
-    PATH_TO_CHECKER_MAP = {}.freeze
+    PATH_TO_CHECKER_MAP = {}
 
     def self.instance_for(path, schema = {})
       PATH_TO_CHECKER_MAP[path] ||= new(path, schema)
