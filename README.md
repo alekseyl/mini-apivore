@@ -65,8 +65,9 @@ class MiniApivoreTest < ActionDispatch::IntegrationTest
   init_swagger('apidocs.json')
 
   # swagger checker initialized once per init_swagger call, 
-  # but since we inheriting from this class, and checking resources in dedicated classes
-  # then we need redefine original swagger_checker
+  # but when you are testing one schema -- you can inherit from this class only ones, 
+  # and check resources in dedicated classes. 
+  # In that case you need redefine original swagger_checker, to map to exact 
   def swagger_checker;
     SWAGGER_CHECKERS[MiniApivoreTest]
   end
@@ -78,11 +79,12 @@ The most readable way to handle check_routes, especially when you have nested re
 is to create a set of named route helpers for the TestClass, may be even extract it to a module if it's a generalized helpers.
 
 Then you need to redefine ```prepare_error_backtrace```, cause assert for correct execution is hidden deep in stack
- and instead of pointing to just to that useless stack frame you need show something upper and may be more context,
- so you can redefine ```prepare_error_backtrace``` and deliver valuable context!  
+ and instead of pointing to that exact but useless part of stack with asserted frame 
+you need show something upper and with a better context,
+ so you should redefine ```prepare_error_backtrace```!
 
-Here is an example how you can handle simple resource route testing, as you can see you can read it 
-without a context of a routes structure and without verbosity:
+Here is an example how you can handle simple resource route testing. 
+As you can see, you can read it without verbosity and a context of a routes structure:
  
 ```ruby
 #cards_api_test.rb
@@ -115,7 +117,7 @@ class CardsApiTest < MiniApivoreTest
     end
    #------- DEFINE CLASS SPECIFIC NAMED ROUTE HELPERS DONE -----------
    # 
-   # failure need a proper stackframe and a context around:
+   # failure need a proper stack frame and a context around:
    def prepare_error_backtrace
      # it will deliver something like this: 
      #"/app/test/helpers/base_routes_helpers.rb:57:in `__create_card'",
