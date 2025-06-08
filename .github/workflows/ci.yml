@@ -19,4 +19,4 @@ jobs:
         bundler-cache: true # 'bundle install' and cache gems
         ruby-version: ${{ matrix.ruby }}
     - name: Run tests
-      run: bundle exec appraisal rake test
+      run: bundle exec rake test
