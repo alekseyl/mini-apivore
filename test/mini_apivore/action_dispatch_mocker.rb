@@ -1,11 +1,12 @@
 # frozen_string_literal: true
+
 require "test_helper"
 
 # Boilerplate
 class ActionDispatchMocker < Minitest::Test
   extend ActiveSupport::Testing::Declarative
 
-  [:get, :post, :patch, :put, :delete].each do |name|
+  %i[get post patch put delete].each do |name|
     define_method(name) do |route, _params, _headers|
       call(
         Hashie::Mash.new(
@@ -26,7 +27,7 @@ class ActionDispatchMocker < Minitest::Test
       "/05_extra_properties.json",
       "/06_missing_required_property.json",
       "/07_missing_non-required_property.json",
-      "/08_untyped_definition.json",
+      "/08_untyped_definition.json"
     ]
 
     case "#{method} #{path}"

@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-# COpied from apivore just to keep as an example
+# Copied from apivore just to kept as an example
 module Apivore
+  # schema validators, not implemented
   class CustomSchemaValidator
     # This constant is an example custom schema included with the gem
     WF_SCHEMA = File.expand_path("./custom_schemata/westfield_api_standards.json", File.dirname(__FILE__))

@@ -11,19 +11,17 @@ class InitializationTest < ActionDispatchMocker
     load_schema.transform_keys(&:to_sym)
   end
 
-  test 'hash with symbolic keys init is OK' do
-    MiniApivore::SwaggerChecker.instance_for('', load_sym_schema)
+  test "hash with symbolic keys init is OK" do
+    MiniApivore::SwaggerChecker.instance_for("", load_sym_schema)
   end
 
-  test 'base methods will match for sym schema and str schema' do
+  test "base methods will match for sym schema and str schema" do
     sym_swg = MiniApivore::Swagger.new(load_sym_schema)
     str_swg = MiniApivore::Swagger.new(load_schema)
-    assert_equal( sym_swg.version, str_swg.version )
-    assert_equal( sym_swg.base_path, str_swg.base_path )
+    assert_equal(sym_swg.version, str_swg.version)
+    assert_equal(sym_swg.base_path, str_swg.base_path)
   end
-
 end
-
 
 # didn't implement custom schema for now
 #
