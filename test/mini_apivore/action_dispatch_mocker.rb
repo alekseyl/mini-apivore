@@ -1,8 +1,4 @@
 # frozen_string_literal: true
-
-require "test_helper"
-
-# Boilerplate
 class ActionDispatchMocker < Minitest::Test
   extend ActiveSupport::Testing::Declarative
 
