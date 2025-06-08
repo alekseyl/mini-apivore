@@ -1,3 +1,7 @@
+## 1.0.1
+* github CI 
+* dockerized env
+
 ## 1.0.0
 * cleared out warnings in a final_test method
 * gem is already old enough an stable to get real major version :)

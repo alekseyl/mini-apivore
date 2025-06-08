@@ -71,7 +71,11 @@ class MiniApivoreTest < ActionDispatch::IntegrationTest
   def swagger_checker;
     SWAGGER_CHECKERS[MiniApivoreTest]
   end
-  
+
+  # a nice structured response to work with:
+  def data_os
+    JSON.parse( response.body, object_class: ::OpenStruct ).data
+  end
 end
 ```
 
@@ -169,7 +173,8 @@ class CardsApiTest < MiniApivoreTest
                               }
                      } } )
     end
-    created_card = Card.last
+    # see data_os definition earlier:
+    created_card = Card.find(data_os.id)
     assert_equal( 'test card creation', created_card.title )
 
     __update_card( created_card, OK, _data: { card: { title: 'Nothing' } } )

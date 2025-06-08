@@ -3,8 +3,6 @@
 require "test_helper"
 
 class InitializationTest < ActionDispatchMocker
-
-
   def load_schema
     JSON.parse(File.read(File.expand_path("../data/01_sample2.0.json", __dir__)))
   end
