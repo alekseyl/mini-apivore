@@ -66,7 +66,10 @@ module MiniApivore
 
   #----- test for untested routes ---------
   def final_test
-    return unless MiniApivore.all_test_ran?
+    # whenever we running tests with inheritance from some base class with dedicated schema,
+    # we will run final_test multiple times, one per ancestor
+    # so we need to assert something to eliminate warnings about zero assertions in a final_test
+    return assert(true) unless MiniApivore.all_test_ran?
 
     @errors = MiniApivore.prepare_untested_errors
     assert(@errors.empty?, @errors.join("\n"))

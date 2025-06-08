@@ -7,7 +7,7 @@ module MiniApivore
   class SwaggerChecker
     PATH_TO_CHECKER_MAP = {}
 
-    def self.instance_for(path, schema = "")
+    def self.instance_for(path, schema = {})
       PATH_TO_CHECKER_MAP[path] ||= new(path, schema)
     end
 
