@@ -1,6 +1,7 @@
 ## 1.0.1
 * github CI 
 * dockerized env
+* you can skip redefinition of swagger_checker in descendants for single base class
 
 ## 1.0.0
 * cleared out warnings in a final_test method

@@ -54,7 +54,7 @@ module MiniApivore
     end
 
     def swagger_checker
-      SWAGGER_CHECKERS[self]
+      SWAGGER_CHECKERS[self] || SWAGGER_CHECKERS.slice(*ancestors).values.first
     end
   end
 
