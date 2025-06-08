@@ -40,7 +40,12 @@ To start testing routes with mini_apivore you need:
 
 * ```require 'mini_apivore' ``` in you MiniTest class file
 * ```include MiniApivore``` in you MiniTest class 
-* ```init_swagger('apidocs.json')``` init swagger-schema to test against, '/apidocs.json' -- this should be a file_path OR a rails route
+* ```init_swagger('apidocs.json')``` init swagger-schema to test against,
+    '/apidocs.json' -- this should be a file_path OR a rails route. 
+**Rem** running init_swagger allows you to test multiple schemas, one per class, 
+        but if you want to inherit from those classes and run each resource from schema in it's own class, 
+        you need to redefine swagger_checker helper method in the class with init_swagger call
+        
 * Run ```check_route( :get, '/cards.json', OK )``` against all routes in your swagger schema
 
 You can see example in test/mini_apivore/mini_apivore/api_schemas_test.rb
@@ -59,8 +64,9 @@ class MiniApivoreTest < ActionDispatch::IntegrationTest
   # initialize schema from local file
   init_swagger('apidocs.json')
 
-  # swagger checker initialized once per class, but since we using one definition
-  # for all we can just redefine original swagger_checker
+  # swagger checker initialized once per init_swagger call, 
+  # but since we inheriting from this class, and checking resources in dedicated classes
+  # then we need redefine original swagger_checker
   def swagger_checker;
     SWAGGER_CHECKERS[MiniApivoreTest]
   end
